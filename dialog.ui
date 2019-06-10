@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Coy定时关机</string>
+   <string>Coy定时关机V1.0</string>
   </property>
   <widget class="QWidget" name="gridLayoutWidget">
    <property name="geometry">
