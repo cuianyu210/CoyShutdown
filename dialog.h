@@ -27,8 +27,8 @@ private:
     QMenu* m_menu;
     QAction* m_action1;
     QAction* m_action2;
-    bool dateFlag;
     bool shutFlag;
+    bool dateTimeStrFlag;
     QString cmd;
     QString tmpDateStr;
     QString shutDateStr;

@@ -58,8 +58,8 @@ Dialog::Dialog(QWidget *parent) :
     m_systemTray->setContextMenu(m_menu);
 
     curDateTime = QDateTime::currentDateTime(); //读取当前日期时间
-    dateFlag = false; //日期标记
     shutFlag = false; //关机成立标记
+    dateTimeStrFlag = false; //日期字符串设置标记
     ui->shutTimEdit->setTime(curDateTime.time());
 
     fTimer = new QTimer(this);
@@ -76,8 +76,11 @@ Dialog::~Dialog()
 
 void Dialog::on_SettingBtn_clicked()
 {
-    QMessageBox::about(nullptr, nullptr, "已设置。。。");
+    QMessageBox::about(nullptr, nullptr, "已设置。。。");   
     fTimer->start();
+    if (ui->setDatebtn->isChecked())
+        ui->shutDateEdit->setEnabled(false);
+    ui->shutTimEdit->setEnabled(false);
 }
 
 void Dialog::on_canBtn_clicked()
@@ -85,19 +88,26 @@ void Dialog::on_canBtn_clicked()
     fTimer->stop();
     QString cmd("shutdown -a");
     pro.start(cmd);
+
+
+    if (ui->setDatebtn->isChecked())
+        ui->shutDateEdit->setEnabled(true);
+
+    ui->shutTimEdit->setEnabled(true);
+
+    shutFlag = false;
     QMessageBox::about(nullptr, nullptr, "已撤销。。。");
 }
 
 void Dialog::on_timer_timerout()
 {
     curDateTime = QDateTime::currentDateTime();
-
     tmpDateStr = curDateTime.date().toString("yyyy-MM-dd");
     shutDateStr = ui->shutDateEdit->date().toString("yyyy-MM-dd");
     tmpTimStr = curDateTime.time().toString("hh:mm");
     shutTimStr = ui->shutTimEdit->time().toString("hh:mm");
 
-    if (dateFlag)
+    if (ui->setDatebtn->isChecked())
     {
         if (tmpDateStr == shutDateStr)
         {
@@ -106,8 +116,9 @@ void Dialog::on_timer_timerout()
                 if (!shutFlag)
                 {
                     shutFlag = true;
-                    QMessageBox::information(nullptr,nullptr, "即将关闭操作系统...",  nullptr, nullptr);
                     pro.start(cmd);
+                    //QMessageBox::information(nullptr,nullptr, "即将关闭操作系统...",  nullptr, nullptr);
+
                 }
             }
         }
@@ -117,8 +128,8 @@ void Dialog::on_timer_timerout()
         if (!shutFlag)
         {
             shutFlag = true;
-            QMessageBox::information(nullptr,nullptr, "即将关闭操作系统...",  nullptr, nullptr);
             pro.start(cmd);
+            //QMessageBox::information(nullptr,nullptr, "即将关闭操作系统...",  nullptr, nullptr);
         }
     }
 }
@@ -158,12 +169,10 @@ void Dialog::on_setDatebtn_clicked(bool checked)
 {
     if (checked)
     {
-        dateFlag = true;
         ui->shutDateEdit->setDate(curDateTime.date());
     }
     else
     {
-        dateFlag = false;
+        ui->shutDateEdit->setEnabled(false);
     }
-
 }
