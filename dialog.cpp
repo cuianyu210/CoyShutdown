@@ -25,7 +25,7 @@ Dialog::Dialog(QWidget *parent) :
     setWindowFlags(Qt::WindowCloseButtonHint | Qt::MSWindowsFixedSizeDialogHint);
 
     //关机命令初始化
-    cmd = "shutdown -s -t 60";
+    cmd = "shutdown -s";
 
     //创建托盘
     m_systemTray = new QSystemTrayIcon(this);
@@ -92,10 +92,10 @@ void Dialog::on_timer_timerout()
 {
     curDateTime = QDateTime::currentDateTime();
 
-    QString tmpDateStr(curDateTime.date().toString("yyyy-MM-dd"));
-    QString shutDateStr(ui->shutDateEdit->date().toString("yyyy-MM-dd"));
-    QString tmpTimStr(curDateTime.time().toString("hh:mm"));
-    QString shutTimStr(ui->shutTimEdit->time().toString("hh:mm"));
+    tmpDateStr = curDateTime.date().toString("yyyy-MM-dd");
+    shutDateStr = ui->shutDateEdit->date().toString("yyyy-MM-dd");
+    tmpTimStr = curDateTime.time().toString("hh:mm");
+    shutTimStr = ui->shutTimEdit->time().toString("hh:mm");
 
     if (dateFlag)
     {
@@ -103,24 +103,22 @@ void Dialog::on_timer_timerout()
         {
             if (tmpTimStr == shutTimStr)
             {
-                pro.start(cmd);
-
                 if (!shutFlag)
                 {
                     shutFlag = true;
                     QMessageBox::information(nullptr,nullptr, "即将关闭操作系统...",  nullptr, nullptr);
+                    pro.start(cmd);
                 }
             }
         }
     }
     else if (tmpTimStr == shutTimStr)
     {
-        pro.start(cmd);
-
         if (!shutFlag)
         {
             shutFlag = true;
             QMessageBox::information(nullptr,nullptr, "即将关闭操作系统...",  nullptr, nullptr);
+            pro.start(cmd);
         }
     }
 }

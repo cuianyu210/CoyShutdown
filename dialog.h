@@ -30,6 +30,10 @@ private:
     bool dateFlag;
     bool shutFlag;
     QString cmd;
+    QString tmpDateStr;
+    QString shutDateStr;
+    QString tmpTimStr;
+    QString shutTimStr;
     void showMenu();
     void showWindow();
     void toExit() __attribute__((noreturn));
