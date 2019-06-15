@@ -10,6 +10,7 @@
 #include <QMenu>
 #include <QCloseEvent>
 
+
 namespace Ui {
 class Dialog;
 }
@@ -50,6 +51,8 @@ private slots:
     void on_setDatebtn_toggled(bool checked);
 
     void on_setDatebtn_clicked(bool checked);
+
+    void on_isDelayShutChkBox_clicked(bool checked);
 
 private:
     Ui::Dialog *ui;

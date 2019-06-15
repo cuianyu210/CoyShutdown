@@ -6,63 +6,110 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>313</width>
-    <height>159</height>
+    <width>389</width>
+    <height>113</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Coy定时关机V1.0</string>
   </property>
-  <widget class="QWidget" name="gridLayoutWidget">
+  <widget class="QWidget" name="verticalLayoutWidget">
    <property name="geometry">
     <rect>
-     <x>9</x>
-     <y>9</y>
-     <width>297</width>
-     <height>141</height>
+     <x>10</x>
+     <y>10</y>
+     <width>373</width>
+     <height>91</height>
     </rect>
    </property>
-   <layout class="QGridLayout" name="gridLayout">
-    <item row="0" column="2">
-     <widget class="QTimeEdit" name="shutTimEdit"/>
-    </item>
-    <item row="0" column="1">
-     <widget class="QDateEdit" name="shutDateEdit">
-      <property name="enabled">
-       <bool>false</bool>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="0">
-     <widget class="QCheckBox" name="setDatebtn">
-      <property name="text">
-       <string>设定日期</string>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="0">
-     <widget class="QCheckBox" name="HideToSysTray">
-      <property name="text">
-       <string>隐藏到系统托盘</string>
-      </property>
-      <property name="checked">
-       <bool>true</bool>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="1">
-     <widget class="QPushButton" name="SettingBtn">
-      <property name="text">
-       <string>设置</string>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="2">
-     <widget class="QPushButton" name="canBtn">
-      <property name="text">
-       <string>撤销设置</string>
-      </property>
-     </widget>
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <layout class="QGridLayout" name="gridLayout">
+      <item row="1" column="4">
+       <widget class="QSpinBox" name="shutDelayBox">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="suffix">
+         <string> 分钟</string>
+        </property>
+        <property name="maximum">
+         <number>60</number>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="4">
+       <widget class="QPushButton" name="SettingBtn">
+        <property name="text">
+         <string>设置关机</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="3">
+       <widget class="QPushButton" name="canBtn">
+        <property name="text">
+         <string>撤销定时关机</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="2">
+       <widget class="QDateEdit" name="shutDateEdit">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="3">
+       <widget class="QLabel" name="label_2">
+        <property name="layoutDirection">
+         <enum>Qt::LeftToRight</enum>
+        </property>
+        <property name="text">
+         <string>设置关机时间</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QCheckBox" name="HideToSysTray">
+        <property name="text">
+         <string>隐藏到托盘</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="3">
+       <widget class="QTimeEdit" name="shutTimEdit"/>
+      </item>
+      <item row="0" column="4">
+       <widget class="QCheckBox" name="isDelayShutChkBox">
+        <property name="text">
+         <string>设置关机延时</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="2">
+       <widget class="QCheckBox" name="setDatebtn">
+        <property name="text">
+         <string>设置日期</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="2">
+       <widget class="QPushButton" name="settingBtn">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>详细设置</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </item>
    </layout>
   </widget>

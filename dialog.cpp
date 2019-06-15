@@ -1,6 +1,6 @@
 ﻿#include "dialog.h"
 #include "ui_dialog.h"
-
+#include <QDebug>
 void Dialog::showMenu()
 {
     m_menu->show();
@@ -21,11 +21,8 @@ Dialog::Dialog(QWidget *parent) :
     ui(new Ui::Dialog)
 {
     ui->setupUi(this);
-    setMaximumSize(313, 159);
+    setMaximumSize(389, 113);
     setWindowFlags(Qt::WindowCloseButtonHint | Qt::MSWindowsFixedSizeDialogHint);
-
-    //关机命令初始化
-    cmd = "shutdown -s";
 
     //创建托盘
     m_systemTray = new QSystemTrayIcon(this);
@@ -76,11 +73,14 @@ Dialog::~Dialog()
 
 void Dialog::on_SettingBtn_clicked()
 {
-    QMessageBox::about(nullptr, nullptr, "已设置。。。");   
+    QMessageBox::information(nullptr, nullptr, "已设置！");
+    this->hide();
     fTimer->start();
-    if (ui->setDatebtn->isChecked())
+    if (ui->setDatebtn->isChecked()) //日期窗口禁用
         ui->shutDateEdit->setEnabled(false);
-    ui->shutTimEdit->setEnabled(false);
+    if (ui->isDelayShutChkBox->isChecked()) //关机延时窗口禁用
+        ui->shutDelayBox->setEnabled(false);
+    ui->shutTimEdit->setEnabled(false); //时间窗口禁用
 }
 
 void Dialog::on_canBtn_clicked()
@@ -90,13 +90,14 @@ void Dialog::on_canBtn_clicked()
     pro.start(cmd);
 
 
-    if (ui->setDatebtn->isChecked())
+    if (ui->setDatebtn->isChecked()) //设置日期窗口重新激活
         ui->shutDateEdit->setEnabled(true);
-
-    ui->shutTimEdit->setEnabled(true);
+    if (ui->isDelayShutChkBox->isChecked()) //关机延时重新窗口激活
+        ui->shutDelayBox->setEnabled(true);
+    ui->shutTimEdit->setEnabled(true); //时间窗口重新激活
 
     shutFlag = false;
-    QMessageBox::about(nullptr, nullptr, "已撤销。。。");
+    QMessageBox::information(nullptr, nullptr, "已撤销！");
 }
 
 void Dialog::on_timer_timerout()
@@ -106,6 +107,18 @@ void Dialog::on_timer_timerout()
     shutDateStr = ui->shutDateEdit->date().toString("yyyy-MM-dd");
     tmpTimStr = curDateTime.time().toString("hh:mm");
     shutTimStr = ui->shutTimEdit->time().toString("hh:mm");
+
+    //关机命令初始化
+    if (ui->isDelayShutChkBox->isChecked())
+    {
+        cmd = cmd.asprintf("shutdown /s /t %d", ui->shutDelayBox->value() * 60);
+        qDebug("cmd的命令为:%s\n", cmd.toStdString().data());
+    }
+    else
+    {
+        cmd = "shutdown /s";
+        qDebug("cmd的命令为:%s\n", cmd.toStdString().data());
+    }
 
     if (ui->setDatebtn->isChecked())
     {
@@ -117,8 +130,6 @@ void Dialog::on_timer_timerout()
                 {
                     shutFlag = true;
                     pro.start(cmd);
-                    //QMessageBox::information(nullptr,nullptr, "即将关闭操作系统...",  nullptr, nullptr);
-
                 }
             }
         }
@@ -129,7 +140,6 @@ void Dialog::on_timer_timerout()
         {
             shutFlag = true;
             pro.start(cmd);
-            //QMessageBox::information(nullptr,nullptr, "即将关闭操作系统...",  nullptr, nullptr);
         }
     }
 }
@@ -175,4 +185,15 @@ void Dialog::on_setDatebtn_clicked(bool checked)
     {
         ui->shutDateEdit->setEnabled(false);
     }
+}
+
+void Dialog::on_isDelayShutChkBox_clicked(bool checked)
+{
+    //设置关机是否延时
+    if (checked)
+    {
+        ui->shutDelayBox->setEnabled(true);
+    }
+    else
+        ui->shutDelayBox->setEnabled(false);
 }
